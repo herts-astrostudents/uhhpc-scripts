@@ -63,7 +63,7 @@ Let's say we want to generate a table of integer numbers and their corresponding
 
 4. Now we have two files in the `test/` directory: `test.py` and `test.sh`. Add the job to the queue by running `qsub test.sh` in the terminal.
 
-5. **Profit.** Now you have two new files in the `test/` directory: `test.eXXXXX` (with a number assigned to the job instead of `XXXXX`) that will contain any unhandled errors (should be empty if everything is good) and `test.eXXXXX` with the output, containing pairs of integers between 0 and 999 and their corresponding squared values.
+5. **Profit.** Now you have two new files in the `test/` directory: `test.eXXXXX` (with a number assigned to the job instead of `XXXXX`) that will contain any unhandled errors (should be empty if everything is good) and `test.oXXXXX` with the output, containing pairs of integers between 0 and 999 and their corresponding squared values.
 
     This `test.oXXXXX` file contains the terminal output of the program, but you can create your own output file by amending your `test.py` to include writing to a file:
 
