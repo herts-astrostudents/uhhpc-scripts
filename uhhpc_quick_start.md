@@ -14,7 +14,7 @@ First, have a look through the [documentation](https://uhhpc.herts.ac.uk/wiki/in
 
 ## Modes of use
 
-There are two ways of using the cluster, via the [queue](https://uhhpc.herts.ac.uk/wiki/index.php/Jobs) and [interactively](https://uhhpc.herts.ac.uk/wiki/index.php/Interactive_jobs).
+There are two ways of using the cluster, via the [queue](https://uhhpc.herts.ac.uk/wiki/index.php/Jobs) and [interactively](https://uhhpc.herts.ac.uk/wiki/index.php/Interactive_jobs). Both ways are described below.
 
 ## Adding jobs to the queue
 
@@ -148,3 +148,26 @@ python test.py
 ```
 
 This is a very basic example and if you need something more interesting, check out [`multiprocessing`](https://docs.python.org/3/library/multiprocessing.html) module in Python. It's a bit of a steep learning curve, but worth it if you need it.
+
+## Interactive use
+
+Using the cluster interactively means you are performing your tasks on your PC or laptop terminal, except you are using the compute nodes on the cluster rather than the processors of your PC or laptop. This can be handy if you need to see the execution on the terminal. Another benefit is that you get the exact resources you asked for (e.g. an 8 core node for 48 hours) which is yours to use for anything until the walltime expires and you are not competing with other users jobs for resources. 
+
+### Starting an interactive job
+
+1. ssh into the cluster the usual way: ssh -X uhhpc.
+(The -X is the command for displaying graphics, so best to use it as default).
+
+2. You should now be in the headnode. From there, type the following command to start an interactive job:
+qsub -l walltime=24:00:00 -l nodes=1:ppn=8 -I -q main
+
+-walltime: This is the length of time you are asking to use one of the compute nodes, which is 24 hours for the example above. The maximum you can ask for at a time is 168 hours (1 week) for the main nodes, and 48 hours for the SMP machines (see below).
+-nodes=1: This is stating that you wish to use one compute node. Usually you will only ever need to use one for an interactive job, but in the case that you wish to use multiple you can do so.
+-ppn=8: This is stating the number of processors/cores to use for that node. 8 is just an example, and for python scripts even 1 core will suffice. If you know that using more cores will speed up your executions then you may ask for more. Note that asking for 32 cores will give you the upgraded compute nodes which are much faster than the 8 core nodes.
+-main: This is stating that you wish to use the main compute nodes. We have other nodes such as the SMP machines (see https://uhhpc.herts.ac.uk/wiki/index.php/SMP_machines), which have 256 GB of RAM (you'll need to do qsub -l walltime=48:00:00 -l nodes=1:ppn=48 -I -q main for this).
+
+The command above should suffice for normal tasks such as running python scripts or running most other things on the cluster. For advanced usage see https://uhhpc.herts.ac.uk/wiki/index.php/Interactive_jobs.
+
+Note that if your terminal is stuck with 'qsub: waiting for job 123456.uhhpc.herts.ac.uk to start' and nothing is happening, this means your request to access a node is in the queue, as the resources you have asked for are all being used by other people. In this case, press Control-C to come out, and then try to access a node again but with less resources (e.g. lower the walltime and number of cores). People that have asked for less resources are higher up in the queue.
+
+**Important**. Do not leave your interactive job idle for days if you are not using it or running anything. Often during peak research time the nodes are all occupied and people can't access any. If you have finished performing tasks please exit the node by typing 'exit' on your terminal. This will take you back to the headnode. 
